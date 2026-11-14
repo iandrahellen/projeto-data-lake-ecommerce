@@ -17,22 +17,40 @@ O projeto foi desenvolvido como parte dos meus estudos práticos em Engenharia d
 - Consultar informações utilizando Amazon Athena.
 - Criar um dashboard para visualização dos resultados no Power BI.
 
-## 🏗️ Arquitetura do projeto
+## 🏗️ Arquitetura do Data Lake
 
-O projeto utiliza uma arquitetura dividida em três camadas:
+O projeto utiliza uma arquitetura em três camadas no Amazon S3, organizando os dados desde sua entrada até a disponibilização para análise.
+
+### Fluxo de processamento
+
+```mermaid
+flowchart TD
+    A["Dados brutos de E-commerce"] --> B["Amazon S3 - Bronze"]
+    B --> C["Python / Pandas"]
+    C --> D["Amazon S3 - Silver"]
+    D --> E["AWS Glue Crawler"]
+    E --> F["AWS Glue Data Catalog"]
+    F --> G["Amazon Athena"]
+    G --> H["Amazon S3 - Gold"]
+    H --> I["Power BI"]
+    I --> J["Dashboard de Análises"]
+```
+
+### Camadas do Data Lake
 
 - **Bronze:** armazenamento dos dados brutos, preservando sua estrutura original.
-- **Silver:** dados tratados, padronizados e preparados para análise.
-- **Gold:** dados consolidados e organizados para consultas e visualizações.
+- **Silver:** dados tratados, padronizados e armazenados em formato Parquet.
+- **Gold:** dados consolidados para consultas e análises.
 
-### Fluxo de dados
+### Etapas da solução
 
-1. Os dados de pedidos são armazenados no Amazon S3.
-2. Os dados passam por processos de limpeza e transformação.
-3. Os arquivos tratados são armazenados em formato Parquet na camada Silver.
-4. O AWS Glue realiza a catalogação dos dados.
-5. O Amazon Athena permite executar consultas SQL.
-6. Os resultados são utilizados na construção de um dashboard no Power BI.
+1. Armazenamento dos dados originais no Amazon S3.
+2. Limpeza e transformação utilizando Python e Pandas.
+3. Armazenamento dos dados tratados na camada Silver.
+4. Catalogação utilizando AWS Glue.
+5. Consultas SQL utilizando Amazon Athena.
+6. Organização dos resultados analíticos na camada Gold.
+7. Construção do dashboard no Power BI.
 
 ## 🛠️ Tecnologias utilizadas
 
@@ -65,31 +83,6 @@ Foi desenvolvido um dashboard no Power BI com análises como:
 
 - Faturamento por categoria.
 - Faturamento por região.
-
-
-## 🏗️ Arquitetura do Data Lake
-
-O projeto utiliza uma arquitetura em três camadas no Amazon S3, organizando os dados desde a entrada até a disponibilização para análise.
-
-```mermaid
-flowchart TD
-    A["Dados brutos de E-commerce"] --> B["Amazon S3 - Bronze"]
-    B --> C["Python / Pandas"]
-    C --> D["Amazon S3 - Silver"]
-    D --> E["AWS Glue Crawler"]
-    E --> F["AWS Glue Data Catalog"]
-    F --> G["Amazon Athena"]
-    G --> H["Amazon S3 - Gold"]
-    H --> I["Power BI"]
-    I --> J["Dashboard de Análises"]
-```
-
-### Camadas do Data Lake
-
-- **Bronze:** armazenamento dos dados originais.
-- **Silver:** dados tratados e padronizados.
-- **Gold:** resultados preparados para análises e visualizações.
-
 
 ## 📚 Aprendizados
 
